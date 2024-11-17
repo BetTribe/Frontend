@@ -6,7 +6,7 @@ import { Client } from "@xmtp/xmtp-js";
 import { useAccount } from 'wagmi';
 import { useReadContract, useWriteContract } from 'wagmi';
 import {contract_address, abi} from "../utils/config"
-import { Search, Settings, Plus, Send, MessageSquare } from 'lucide-react';
+import { Search, Settings, Plus, Send, MessageSquare, Users, ArrowLeft } from 'lucide-react';
 const GroupChat = () => {
   const [client, setClient] = useState(null);
   const [group, setGroup] = useState(null);
@@ -593,21 +593,21 @@ const GroupChat = () => {
   }, [userAddress, client,messages]);
 
   return (
-    <div className="h-screen bg-gray-100 text-black">
+    <div className="h-screen bg-gray-50 text-black">
       <div className="h-full flex">
         {/* Left Sidebar */}
-        <div className="w-80 bg-gray-900 text-white flex flex-col">
+        <div className="w-80 bg-white text-gray-800 flex flex-col border-r border-gray-200">
           {/* Sidebar Header */}
-          <div className="p-4 bg-gray-800 flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center">
+          <div className="p-4 bg-white flex justify-between items-center border-b border-gray-100">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
                 {userAddress ? userAddress.slice(0, 2) : '?'}
               </div>
-              <div className="font-medium truncate">
+              <div className="font-medium truncate text-gray-700">
                 {userAddress ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}` : 'Not Connected'}
               </div>
             </div>
-            <Settings className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
+            <Settings className="w-5 h-5 text-gray-400 hover:text-gray-600 cursor-pointer transition-colors" />
           </div>
 
           {/* Search Bar */}
@@ -617,7 +617,7 @@ const GroupChat = () => {
               <input
                 type="text"
                 placeholder="Search groups"
-                className="w-full bg-gray-800 text-white pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-gray-50 text-gray-700 pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
               />
             </div>
           </div>
@@ -625,19 +625,19 @@ const GroupChat = () => {
           {/* Groups List */}
           <div className="flex-1 overflow-y-auto">
             {!wallet ? (
-              <div className="p-4 text-center">
+              <div className="p-6 text-center">
                 <button
                   onClick={initializeClient}
-                  className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all shadow-sm"
                 >
                   Connect Wallet
                 </button>
               </div>
             ) : !client ? (
-              <div className="p-4 text-center">
+              <div className="p-6 text-center">
                 <button
                   onClick={initializeXMTP}
-                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all shadow-sm"
                 >
                   Initialize XMTP
                 </button>
@@ -647,18 +647,21 @@ const GroupChat = () => {
                 {userGroups.map((group) => (
                   <button
                     key={group.id}
-                    onClick={() => loadGroup(group.id)}
-                    className={`w-full text-left p-4 hover:bg-gray-800 transition-colors ${
-                      selectedGroupId === group.id ? 'bg-gray-800' : ''
+                    onClick={() => {
+                      loadGroup(group.id);
+                      setShowCreateGroup(false);
+                    }}
+                    className={`w-full text-left p-4 hover:bg-gray-50 transition-all ${
+                      selectedGroupId === group.id ? 'bg-blue-50' : ''
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
-                        <MessageSquare className="w-6 h-6 text-gray-400" />
+                      <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <Users className="w-6 h-6" />
                       </div>
                       <div>
-                        <div className="font-medium">Group {group.id.slice(-4)}</div>
-                        <div className="text-sm text-gray-400">
+                        <div className="font-medium text-gray-700">Group {group.id.slice(-4)}</div>
+                        <div className="text-sm text-gray-500">
                           {group.members.length} members
                         </div>
                       </div>
@@ -673,7 +676,7 @@ const GroupChat = () => {
           {client && (
             <button
               onClick={() => setShowCreateGroup(!showCreateGroup)}
-              className="p-4 bg-gray-800 text-white hover:bg-gray-700 transition-colors flex items-center justify-center space-x-2"
+              className="p-4 bg-gray-50 text-gray-700 hover:bg-gray-100 transition-all flex items-center justify-center space-x-2 border-t border-gray-200"
             >
               <Plus className="w-5 h-5" />
               <span>New Group</span>
@@ -682,40 +685,53 @@ const GroupChat = () => {
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col bg-gray-100">
+        <div className="flex-1 flex flex-col bg-white">
           {client && (showCreateGroup ? (
             // Create Group Form
-            <div className="flex-1 p-6 bg-white">
-              <h2 className="text-2xl font-bold mb-6">Create New Group</h2>
-              <div className="max-w-2xl">
-                <div className="space-y-4">
-                  <div>
+            <div className="flex-1 bg-white">
+              <div className="p-4 bg-white text-gray-800 flex items-center space-x-4 border-b border-gray-200">
+                <button 
+                  onClick={() => {
+                    if (selectedGroupId) {
+                      setShowCreateGroup(false);
+                    }
+                  }}
+                  className="hover:bg-gray-100 p-2 rounded-full transition-all"
+                >
+                  <ArrowLeft className="w-6 h-6" />
+                </button>
+                <h2 className="text-xl font-semibold">Create New Group</h2>
+              </div>
+              
+              <div className="p-6 max-w-2xl mx-auto">
+                <div className="space-y-6">
+                  <div className="bg-gray-50 p-6 rounded-xl">
                     <input
                       type="text"
                       value={newMemberAddress}
                       onChange={(e) => setNewMemberAddress(e.target.value)}
                       placeholder="Enter wallet address"
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
                     />
+                    <button
+                      onClick={addMember}
+                      disabled={isLoading || !newMemberAddress}
+                      className="mt-4 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all disabled:opacity-50"
+                    >
+                      Add Member
+                    </button>
                   </div>
-                  <button
-                    onClick={addMember}
-                    disabled={isLoading || !newMemberAddress}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-                  >
-                    Add Member
-                  </button>
 
                   {memberAddresses.length > 0 && (
-                    <div className="mt-6">
-                      <h3 className="text-lg font-medium mb-3">Added Members</h3>
-                      <div className="space-y-2">
+                    <div className="bg-gray-50 p-6 rounded-xl">
+                      <h3 className="text-lg font-medium mb-4 text-gray-700">Added Members</h3>
+                      <div className="space-y-3">
                         {memberAddresses.map((address, index) => (
-                          <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <span className="font-mono">{address}</span>
+                          <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                            <span className="font-mono text-sm text-gray-600">{address}</span>
                             <button
                               onClick={() => setMemberAddresses(prev => prev.filter((_, i) => i !== index))}
-                              className="text-red-500 hover:text-red-600"
+                              className="text-red-500 hover:text-red-600 transition-colors"
                             >
                               Remove
                             </button>
@@ -728,7 +744,7 @@ const GroupChat = () => {
                   <button
                     onClick={createGroup}
                     disabled={isLoading || memberAddresses.length === 0}
-                    className="mt-6 w-full bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 transition-colors"
+                    className="w-full bg-blue-600 text-white px-6 py-4 rounded-xl hover:bg-blue-700 transition-all disabled:opacity-50 shadow-sm"
                   >
                     {isLoading ? 'Creating...' : 'Create Group'}
                   </button>
@@ -738,13 +754,13 @@ const GroupChat = () => {
           ) : selectedGroupId && group ? (
             <>
               {/* Chat Header */}
-              <div className="p-4 bg-gray-900 text-white hover:bg-gray-700 transition-colors flex items-center justify-center space-x-2">
-                <div className="flex items-center space-x-3 ">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-gray-500" />
+              <div className="p-4 bg-white text-gray-800 flex items-center justify-between border-b border-gray-200">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <Users className="w-6 h-6" />
                   </div>
                   <div>
-                    <div className="font-medium">Group {selectedGroupId.slice(-4)}</div>
+                    <div className="font-medium text-lg text-gray-700">Group {selectedGroupId.slice(-4)}</div>
                     <div className="text-sm text-gray-500">
                       {group.length} members
                     </div>
@@ -755,7 +771,7 @@ const GroupChat = () => {
               {/* Messages */}
               <div 
                 id="message-container"
-                className="flex-1 overflow-y-auto p-6 space-y-4 bg-[#efeae2]"
+                className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50"
               >
                 {messages.map((msg, index) => (
                   <div
@@ -763,17 +779,19 @@ const GroupChat = () => {
                     className={`flex ${msg.senderAddress === userAddress ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[70%] rounded-lg px-4 py-2 ${
+                      className={`max-w-[70%] rounded-xl px-6 py-3 shadow-sm ${
                         msg.senderAddress === userAddress
-                          ? 'bg-[#25460c]'
-                          : 'bg-gray-800 '
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white text-gray-800'
                       }`}
                     >
-                      <div className="text-xs text-gray-500 mb-1">
+                      <div className={`text-xs ${msg.senderAddress === userAddress ? 'text-blue-100' : 'text-gray-500'} mb-1`}>
                         {msg.senderAddress?.slice(0, 6)}...{msg.senderAddress?.slice(-4)}
                       </div>
-                      <div className="text-white">{msg.content}</div>
-                      <div className="text-xs text-gray-400 text-right mt-1">
+                      <div>
+                        {msg.content}
+                      </div>
+                      <div className={`text-xs ${msg.senderAddress === userAddress ? 'text-blue-100' : 'text-gray-400'} text-right mt-1`}>
                         {new Date(msg.sent).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </div>
                     </div>
@@ -782,7 +800,7 @@ const GroupChat = () => {
               </div>
 
               {/* Message Input */}
-              <div className="bg-gray-900 p-4 border-t border-gray-200">
+              <div className="bg-white p-4 border-t border-gray-200">
                 <div className="flex items-center space-x-4">
                   <input
                     type="text"
@@ -795,12 +813,12 @@ const GroupChat = () => {
                       }
                     }}
                     placeholder="Type a message"
-                    className="flex-1 p-3 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 p-3 bg-gray-50 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all"
                   />
                   <button
                     onClick={sendMessage}
                     disabled={isLoading || !newMessage.trim()}
-                    className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 transition-colors disabled:bg-gray-400"
+                    className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition-all disabled:opacity-50"
                   >
                     <Send className="w-5 h-5" />
                   </button>
@@ -811,8 +829,10 @@ const GroupChat = () => {
             // No chat selected state
             <div className="flex-1 flex items-center justify-center bg-gray-50">
               <div className="text-center">
-                <MessageSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-gray-700">Welcome to XMTP Chat</h3>
+                <div className="w-24 h-24 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-6">
+                  <MessageSquare className="w-12 h-12" />
+                </div>
+                <h3 className="text-2xl font-medium text-gray-800">Welcome to XMTP Chat</h3>
                 <p className="text-gray-500 mt-2">Select a group or create a new one to start chatting</p>
               </div>
             </div>
