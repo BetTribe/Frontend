@@ -396,7 +396,9 @@ const GroupChat = () => {
   
     const handleParticipateBet = async (betId, agree) => {
       try {
+        console.log("AGREE BET ID", betId)
         currentBetId= betId;
+        console.log("CURRENT",currentBetId)
         console.log("group bets",bet);
         console.log("group bets amount",bet[2])
         await writeContract({
@@ -433,7 +435,6 @@ const GroupChat = () => {
       try {
         const words = message.trim().split(' ');
         const command = words[0].toLowerCase();
-  
         switch (command) {
           case '/createbet': {
             if (words.length < 3) throw new Error('Usage: /createbet <amount> <prompt>');
@@ -441,7 +442,7 @@ const GroupChat = () => {
             const amount = words[1];
             const prompt = words.slice(2).join(' ');
             const betId = await handleCreateBet(prompt, amount);
-            return `Creating bet: "${prompt}" for ${amount} ETH with id ${betId}`;
+            return `Creating bet: "${prompt}" for ${amount} ETH with id ${betId-1}`;
           }
           
           case '/agree':
@@ -452,6 +453,7 @@ const GroupChat = () => {
             const agree = command === '/agree';
             console.log("AGREE",agree)
             await handleParticipateBet(betId, agree);
+            console.log("currentBetId",currentBetId)
             return `${agree ? 'Agreeing' : 'Disagreeing'} to bet #${betId}`;
           }
           

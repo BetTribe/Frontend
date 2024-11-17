@@ -1,4 +1,4 @@
-export const contract_address= "0x72307c0AA4319792AE78f8b12Dc730ECfADf450e";
+export const contract_address= "0xDF933Cd647f69198D44cC0C6e982568534546f33";
 export const abi = [
 	{
 		"inputs": [
@@ -99,19 +99,6 @@ export const abi = [
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -127,6 +114,55 @@ export const abi = [
 		"name": "createBet",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_betId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_prediction",
+				"type": "bool"
+			}
+		],
+		"name": "participateInBet",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_betId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_result",
+				"type": "bool"
+			}
+		],
+		"name": "resolveBet",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -171,42 +207,6 @@ export const abi = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_betId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "_prediction",
-				"type": "bool"
-			}
-		],
-		"name": "participateInBet",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_betId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "_result",
-				"type": "bool"
-			}
-		],
-		"name": "resolveBet",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
