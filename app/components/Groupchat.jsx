@@ -6,8 +6,15 @@ import { Client } from "@xmtp/xmtp-js";
 import { useAccount } from 'wagmi';
 import { useReadContract, useWriteContract } from 'wagmi';
 import {contract_address, abi} from "../utils/config"
+<<<<<<< HEAD
 import { Search, Settings, Plus, Send, MessageSquare, Users, ArrowLeft } from 'lucide-react';
+=======
+import { Search, Settings, Plus, Send, MessageSquare } from 'lucide-react';
+import resolveBet from "../ai/OpenAi";
+
+>>>>>>> 15f5e71 (chore: Added AI verification)
 const GroupChat = () => {
+
   const [client, setClient] = useState(null);
   const [group, setGroup] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -22,10 +29,13 @@ const GroupChat = () => {
   const [userGroups, setUserGroups] = useState([]);
   const [selectedGroupId, setSelectedGroupId] = useState(null);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
+  const [currentBetId, setCurrentBetId] = useState(0);
+
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   console.log(address);
   // Initialize XMTP for the current user
+
   const initializeXMTP = async () => {
     try {
       setIsInitializingXMTP(true);
@@ -365,7 +375,7 @@ const GroupChat = () => {
         throw error;
       }
     };
-    let currentBetId=0;
+
     const { data: totalBets } = useReadContract({
       address: contract_address,
       abi: abi,
@@ -387,6 +397,7 @@ const GroupChat = () => {
           args: [prompt, parseEther(amount)]
         });
         const newBetId = Number(totalBets);
+        setCurrentBetId(newBetId);
         return newBetId;
       } catch (error) {
         console.error('Error creating bet:', error);
@@ -397,7 +408,7 @@ const GroupChat = () => {
     const handleParticipateBet = async (betId, agree) => {
       try {
         console.log("AGREE BET ID", betId)
-        currentBetId= betId;
+        setCurrentBetId(betId);
         console.log("CURRENT",currentBetId)
         console.log("group bets",bet);
         console.log("group bets amount",bet[2])
@@ -414,15 +425,18 @@ const GroupChat = () => {
       }
     };
   
-    const handleResolveBet = async (betId, result) => {
+    const handleResolveBet = async (betId) => {
       if (!address) throw new Error('Must be connected to resolve bets');
       try {
+        setCurrentBetId(betId);
+        const result = [true,false][Math.floor(Math.random()*2)];
+        console.log(result)
         console.log("entered")
         await writeContract({
           address: contract_address,
           abi: abi,
           functionName: 'resolveBet',
-          args: [BigInt(betId), true]
+          args: [BigInt(betId), result]
         });
       } catch (error) {
         console.error('Error resolving bet:', error);
@@ -461,6 +475,7 @@ const GroupChat = () => {
             if (words.length !== 2) throw new Error('Usage: /resolvebet <betId>');
             
             const betId = parseInt(words[1]);
+
             await handleResolveBet(betId, true);
             return `Resolving bet #${betId}`;
           }
