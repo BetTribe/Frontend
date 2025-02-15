@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BeTribe - Decentralized Chat-Based Betting Platform
+
+BeTribe is a decentralized chat-based betting platform built on the  blockchain. It enables users to chat and place bets simultaneously using XMTP, ensuring transparency through smart contracts and AI-driven result verification. The platform provides a seamless betting experience with automated resolution mechanisms.
+
+## Features
+
+- **Decentralized Betting**: Users can place bets directly through chat messages without relying on centralized bookmakers.
+- **AI-Driven Result Verification**: AI agents fetch and verify match results from external data sources to resolve bets fairly.
+- **Seamless Chat Integration**: Built on XMTP, allowing real-time betting conversations and interactions.
+- **Smart Contract Transparency**: Bets and payouts are managed through immutable smart contracts for fairness.
+- **Multi-Network Deployment**: Contracts are deployed on the Mantle network, ensuring scalability and efficiency.
+
+## How It Works
+
+1. **Join the Chat**: Users enter a chatroom where betting discussions take place.
+2. **Place a Bet**: Users can place bets using a simple command format, e.g., `bet 1 ETH on Team A to win`.
+3. **Data Fetching**: The AI agent retrieves live match data from the Soccer API (`https://api.soccersapi.com/v2.2/livescores/`).
+4. **Result Verification**: AI processes the match data and determines the bet outcome.
+5. **Automated Settlement**: The smart contract processes winnings and distributes rewards accordingly.
+
+## Deployment
+
+BeTribe smart contracts are deployed on the Mantle network for efficient execution and low-cost transactions.
+
+## Technologies Used
+
+- **Blockchain**: Mantle
+- **Messaging Protocol**: XMTP
+- **Smart Contracts**: Solidity
+- **AI Integration**: Ollama model for result verification
+- **Frontend**: React.js
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (Latest LTS version recommended)
+- MetaMask or a compatible Web3 wallet
+- XMTP client setup
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-repo/betribe.git
+   cd betribe
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
 
-## Learn More
+3. Set up environment variables:
+   Create a `.env` file and configure API keys, XMTP settings, and smart contract addresses.
 
-To learn more about Next.js, take a look at the following resources:
+4. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Roadmap
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [ ] Expand betting categories beyond sports.
+- [ ] Introduce social features like leaderboards and communities.
+- [ ] Optimize AI verification with additional data sources.
+- [ ] Support multiple blockchain networks.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+We welcome contributions! Feel free to submit pull requests or open issues for discussion.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is licensed under the MIT License.
+
+## Contact
+
+For questions or collaborations, reach out via [your email] or open an issue in the repository.
+
