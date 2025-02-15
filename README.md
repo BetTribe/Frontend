@@ -27,7 +27,7 @@ BeTribe smart contracts are deployed on the Mantle network for efficient executi
 - **Blockchain**: Mantle
 - **Messaging Protocol**: XMTP
 - **Smart Contracts**: Solidity
-- **AI Integration**: Ollama model for result verification
+- **AI Integration**: openai model for result verification
 - **Frontend**: React.js
 
 ## Getting Started
